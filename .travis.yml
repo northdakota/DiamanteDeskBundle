@@ -22,4 +22,3 @@ matrix:
 before_script:
   - phpenv config-add travis.php.ini
   - composer self-update
-  - composer update --prefer-source
