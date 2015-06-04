@@ -12,7 +12,7 @@ branches:
     - master
 
 env:
-  - SYMFONY_VERSION="2.3.*" DB=mysql
+  - SYMFONY_VERSION=2.3.*
 
 matrix:
   allow_failures:
@@ -22,3 +22,4 @@ matrix:
 before_script:
   - phpenv config-add travis.php.ini
   - composer self-update
+  - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-dist --update-no-dev
