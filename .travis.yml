@@ -21,4 +21,6 @@ matrix:
 
 before_script:
   - phpenv config-add travis.php.ini
-  - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-source
+  - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-source --dev
+
+script: phpunit --coverage-text
