@@ -22,4 +22,4 @@ matrix:
 before_script:
   - phpenv config-add travis.php.ini
   - composer self-update
-  - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-dist --update-no-dev
+  - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-dist
