@@ -13,7 +13,6 @@ branches:
 
 env:
   - SYMFONY_VERSION=2.3.*
-  - PHPUNIT_VERSION="^4.8@dev"
 
 matrix:
   allow_failures:
@@ -22,7 +21,7 @@ matrix:
 
 before_script:
   - phpenv config-add travis.php.ini
-  - composer require phpunit/phpunit:${PHPUNIT_VERSION} --prefer-dist
+  - composer require phpunit/phpunit:^4.8@dev --prefer-dist
   - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-dist
 
 script: phpunit
