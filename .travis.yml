@@ -21,6 +21,7 @@ matrix:
 
 before_script:
   - phpenv config-add travis.php.ini
+  - composer require phpunit/phpunit
   - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-dist
 
 script: phpunit
