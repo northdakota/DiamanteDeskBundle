@@ -10,4 +10,4 @@ if (!is_file($autoload)) {
     die("Composer Autoload file not found.");
 }
 
-require $autoload;
+return require $autoload;
