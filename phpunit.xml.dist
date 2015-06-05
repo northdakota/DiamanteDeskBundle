@@ -10,7 +10,8 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
     stopOnFailure               = "false"
-    syntaxCheck                 = "false">
+    syntaxCheck                 = "false"
+    bootstrap                   = "Tests/bootstrap.php">
 
     <testsuites>
         <testsuite name="DiamanteDesk Test Suite">
@@ -36,4 +37,9 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <php>
+        <env name="CLASS_AUTOLOADER_FROM_SRC_DIR"  value="/../../../../vendor/autoload.php"/>
+        <env name="CLASS_AUTOLOADER_FROM_VENDOR_DIR"  value="/../../../../autoload.php"/>
+    </php>
 </phpunit>
