@@ -92,7 +92,7 @@ class TicketController extends Controller
         try {
             $ticket = $this->get('diamante.ticket.service')->loadTicketByKey($key);
 
-            return ['entity'  => $ticket];
+            return ['entity'  => $ticket, 'ticketKey' => (string)$ticket->getKey()];
         } catch (TicketMovedException $e) {
             return $this->redirect(
                 $this->generateUrl(
@@ -235,8 +235,13 @@ class TicketController extends Controller
         try {
             $this->handle($form);
 
-            $branchAssigneeId = $command->branch->getDefaultAssignee()->getId();
-            $command->assignee = $command->assignee ? $command->assignee->getId() : $branchAssigneeId;
+            $branchAssignee = $command->branch->getDefaultAssignee();
+            if ($command->assignee) {
+                $command->assignee = $command->assignee->getId();
+            } elseif ($branchAssignee) {
+                $command->assignee = $branchAssignee->getId();
+            }
+
             $command->branch = $command->branch->getId();
 
             $ticket = $this->get('diamante.ticket.service')->createTicket($command);
