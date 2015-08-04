@@ -45,7 +45,8 @@ abstract class AbstractCommand extends ContainerAwareCommand
             $em->getClassMetadata(\Diamante\DeskBundle\Entity\Attachment::getClassName()),
             $em->getClassMetadata(\Diamante\DeskBundle\Entity\BranchEmailConfiguration::getClassName()),
             $em->getClassMetadata(\Diamante\DeskBundle\Entity\MessageReference::getClassName()),
-            $em->getClassMetadata(\Diamante\DeskBundle\Entity\TicketHistory::getClassName())
+            $em->getClassMetadata(\Diamante\DeskBundle\Entity\TicketHistory::getClassName()),
+            $em->getClassMetadata(\Diamante\DeskBundle\Entity\WatcherList::getClassName()),
         );
 
         $event->disableListeners();
@@ -92,25 +93,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
         }
 
         return new Schema($targetTables);
-    }
-
-    /**
-     * Install assets
-     * @param OutputInterface $output
-     */
-    protected function assetsInstall(OutputInterface $output)
-    {
-        $this->runExistingCommand('oro:assets:install', $output, array('target' => './'));
-    }
-
-    /**
-     * Dump assetic
-     * @param OutputInterface $output
-     * @param array $params
-     */
-    protected function asseticDump(OutputInterface $output, array $params = array())
-    {
-        $this->runExistingCommand('assetic:dump', $output, $params);
     }
 
     /**

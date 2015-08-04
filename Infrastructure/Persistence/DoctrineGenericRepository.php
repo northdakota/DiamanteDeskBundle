@@ -26,6 +26,8 @@ use Diamante\UserBundle\Model\ApiUser\ApiUser;
 class DoctrineGenericRepository extends EntityRepository implements Repository, FilterableRepository
 {
     const SELECT_ALIAS = 'e';
+
+    const HAS_TABLE_ALIAS = 4;
     /**
      * @param $id
      * @return Entity
@@ -61,6 +63,7 @@ class DoctrineGenericRepository extends EntityRepository implements Repository, 
     public function remove(Entity $entity)
     {
         $this->_em->remove($entity);
+        $this->clearSearchIndex($entity);
         $this->_em->flush($entity);
     }
 
@@ -117,9 +120,14 @@ class DoctrineGenericRepository extends EntityRepository implements Repository, 
      */
     protected function buildWhereExpression(QueryBuilder $qb, array $condition)
     {
-        list($field, $operator, $value) = $condition;
+        if(self::HAS_TABLE_ALIAS == count($condition)) {
+            list($table, $field, $operator, $value) = $condition;
+        } else {
+            $table = self::SELECT_ALIAS;
+            list($field, $operator, $value) = $condition;
+        }
 
-        $field = sprintf('%s.%s', self::SELECT_ALIAS, $field);
+        $field = sprintf('%s.%s', $table, $field);
 
         switch ($operator) {
             case 'like':
@@ -159,5 +167,26 @@ class DoctrineGenericRepository extends EntityRepository implements Repository, 
         }
 
         return $result;
+    }
+
+    /**
+     * Refresh search indexes to prevent transaction rollback
+     *
+     * @param Entity $entity
+     */
+    public function clearSearchIndex(Entity $entity)
+    {
+        $searchRepository = $this->_em->getRepository('OroSearchBundle:Item');
+        if (!$searchRepository) {
+            return;
+        }
+        $searchItems = $searchRepository->findBy(
+            ['entity' => get_class($entity), 'recordId' => $entity->getId()]
+        );
+
+        foreach ($searchItems as $item) {
+            $this->_em->remove($item);
+        }
+
     }
 }
